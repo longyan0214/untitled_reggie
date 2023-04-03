@@ -74,6 +74,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         session.setAttribute("user", user.getId());
 
+        // 如果用户登录成功，删除redis中缓存的验证码
+        stringRedisTemplate.delete(LOGIN_CODE_KEY + phone);
+
         // 返回
         return R.success(user);
     }
